@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const con = require('../DB')
-const { getHostnameInfo, getIPAddressInfo, getRamInfo, getStorageInfo } = require('../Data/Hardware.Data')
+const { getHostnameInfo, getIPAddressInfo, getRamInfo, getStorageInfo, getHardwareStatus } = require('../Data/Hardware.Data')
 
 //GET ALL
 router.get('/', (req, res) => {
@@ -41,8 +41,8 @@ router.get('/:id', (req, res) => {
 
 //Create
 router.post('/',async (req,res) => {
-    const check = await getStorageInfo()
-    console.log(check)
+    const check = await getHardwareStatus()
+    //console.log(check)
 
     try{
         if(check != 'undefined'){
