@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const con = require('../DB')
-const { HostNameInfo } = require('../Data/Hardware.Data')
+const { getSoftwareInfo, getSoftwareStatus } = require('../Data/Software.Data')
 
 //GET ALL
 router.get('/', (req, res) => {
@@ -40,8 +40,8 @@ router.get('/:id', (req, res) => {
 /*-------------------------------------------------------------------------------------------------------------------------*/
 
 //Create
-router.post('/', (req,res) => {
-    const {check} = req.body
+router.post('/',async (req,res) => {
+    const check = await getSoftwareStatus()
 
     try{
         con.query(

@@ -1,7 +1,7 @@
 const si = require("systeminformation");
 const os = require("os");
 
-//ค่า Divice name
+//ค่า Device name
 const getHostnameInfo = () => {
   const HostName = os.hostname();
   HostName != undefined
@@ -41,7 +41,7 @@ const getRamInfo = async () => {
   }
 };
 
-//ค่า Harddisk
+//ค่า Hard disk
 const getStorageInfo = async () => {
   const Disks = await si.diskLayout();
   const DisksList = [];

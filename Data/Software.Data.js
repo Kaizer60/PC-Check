@@ -1,72 +1,85 @@
-const winreg = require('winreg');
+const fs = require('fs');
 
-async function getInstalledPrograms() {
-  return new Promise((resolve, reject) => {
-    const regKey = new winreg({
-      hive: winreg.HKLM, // HKEY_LOCAL_MACHINE
-      key: '\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall'
-    });
+const getSoftwareInfo = async () => {
+  const directoryPath = ['C:\\Program Files (x86)', 'C:\\Program Files'];
+  const ProgramFolderList_1 = [];
+  const ProgramFolderList_2 = [];
+  const ProgramList = [];
 
-    const installedPrograms = [];
-
-    regKey.keys(async (error, subkeys) => {
-      if (error) {
-        reject(`Error: ${error}`);
-        return;
-      }
-
-      for (const subkey of subkeys) {
-        await new Promise(subkeyCallback => {
-          subkey.values((error, items) => {
-            if (error) {
-              subkeyCallback();
-              reject(`Error: ${error}`);
-              return;
-            }
-
-            const programName = items.find(item => item.name === 'DisplayName');
-            const programVersion = items.find(item => item.name === 'DisplayVersion');
-
-            if (programName && programVersion) {
-              installedPrograms.push(`${programName.value} (Version: ${programVersion.value})`);
-            }
-
-            subkeyCallback();
-          });
-        });
-      }
-
-      resolve(installedPrograms);
-    });
-  });
-}
-
-async function main() {
-  CheckList = []
   try {
-    const programs = await getInstalledPrograms();
-    //console.log('Installed Programs:\n');
-    programs.forEach(program => {
-      CheckList.push(program)
-      //console.log(program);
-    });
-    return CheckList
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-// เรียกใช้ฟังก์ชันหลัก
-const getProgramInfo = async () => {
-  const Info = await main()
-
-  for (const item of Info) {
-    if (item.includes("Microsoft Office")) {
-      console.log(item);
+    for(let x = directoryPath.length-1; x >= 0; x--){
+      if(x == 1){
+        const files = await fs.promises.readdir(directoryPath[x]);
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          ProgramFolderList_1.push(file);
+        }
+        
+        for (const item of ProgramFolderList_1) {
+          if (item.includes("AnyDesk")) {
+            ProgramList.push(item);
+          }
+          else if (item.includes("Microsoft Office")) {
+            ProgramList.push(item);
+          }
+          else if (item.includes("Adobe")) {
+            ProgramList.push(item);
+          }
+          else  if (item.includes("WinRAR")) {
+            ProgramList.push(item);
+          }
+        }
+      }
+      else if(x == 0){
+        const files = await fs.promises.readdir(directoryPath[x]);
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          ProgramFolderList_2.push(file);
+        }
+        
+        for (const item of ProgramFolderList_2) {
+          if (item.includes("AnyDesk")) {
+            ProgramList.push(item);
+          }
+          else if (item.includes("Microsoft Office")) {
+            ProgramList.push(item);
+          }
+          else if (item.includes("Adobe")) {
+            ProgramList.push(item);
+          }
+          else  if (item.includes("WinRAR")) {
+            ProgramList.push(item);
+          }
+        }
+      }
     }
+    //console.log(ProgramList)
+    return ProgramList.join(', ')
+  } catch (err) {
+    console.error(`Error reading directory: ${err}`);
   }
-
-  //console.log(Info)
 }
 
+const getSoftwareStatus = async () => {
+  try{
+    const retrospective = await getSoftwareInfo()
+    const checkStatus = retrospective.split(', ')
 
+    if(checkStatus.length == 5){
+      console.log(true)
+      console.log(checkStatus)
+      return true
+    }
+    else{
+      console.log(false)
+      return false
+    }
+  }catch(err){
+    return err
+  }
+}
+
+module.exports = {
+  getSoftwareInfo,
+  getSoftwareStatus,
+}
