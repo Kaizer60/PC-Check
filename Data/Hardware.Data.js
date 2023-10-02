@@ -8,8 +8,8 @@ const getHostnameInfo = () => {
     ? (HostNameInfo = HostName)
     : (HostNameInfo = "undefined");
   //console.log(os.hostname())
-  //return "Device name : " + HostNameInfo;
-  return "Device name : Gcap";
+  return "Device name : " + HostNameInfo;
+  //return "Device name : Gcap";
 };
 
 //ค่า IP4V
@@ -21,8 +21,8 @@ const getIPAddressInfo = () => {
 
     for (const iface of interfacesInfo) {
       if (iface.family === "IPv4" && !iface.internal) {
-        //return "IP4v : " + iface.address;
-        return "IP4v : 192.168.80.80";
+        return "IP4v : " + iface.address;
+        //return "IP4v : 192.168.80.80";
       }
     }
   }

@@ -9,6 +9,7 @@ const {
   getHardwareStatus,
 } = require("../Data/Hardware.Data");
 const { getSoftwareInfo, getSoftwareStatus } = require("../Data/Software.Data");
+const { getDrivesInfo, getDrivesStatus } = require('../Data/Drive.Data')
 
 //GET ALL
 router.get("/", (req, res) => {
@@ -48,20 +49,26 @@ router.post("/", async (req, res) => {
   const postRamInfo = await getRamInfo();
   const postStorageInfo = await getStorageInfo();
   const postSoftwareInfo = await getSoftwareInfo();
+  const postDrivesInfo = await getDrivesInfo();
   const postHardwareStatus = await getHardwareStatus();
   const postSoftwareStatus = await getSoftwareStatus();
+  const postDrivesStatus = await getDrivesStatus();
+
+  //console.log(typeof(postDrivesInfo))
 
   try {
     con.query(
-      "INSERT INTO fulltest(`ip`, `hostname`, `ram`, `storage`, `software`, `hardware_status`, `software_status`) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO fulltest(`ip`, `hostname`, `ram`, `storage`, `software`, `drive`, `hardware_status`, `software_status`, `drive_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         postIPAddressInfo,
         postHostnameInfo,
         postRamInfo,
         postStorageInfo,
         postSoftwareInfo,
+        postDrivesInfo,
         postHardwareStatus,
         postSoftwareStatus,
+        postDrivesStatus,
       ],
       (err, result) => {
         return err
@@ -84,20 +91,24 @@ router.put("/:id", async (req, res) => {
   const postRamInfo = await getRamInfo();
   const postStorageInfo = await getStorageInfo();
   const postSoftwareInfo = await getSoftwareInfo();
+  const postDrivesInfo = await getDrivesInfo();
   const postHardwareStatus = await getHardwareStatus();
   const postSoftwareStatus = await getSoftwareStatus();
+  const postDrivesStatus = await getDrivesStatus();
 
   try {
     con.query(
-      "UPDATE fulltest SET `ip` = ?, `hostname` = ?, `ram` = ?, `storage` = ?, `software` = ?, `hardware_status` = ?, `software_status` = ? WHERE id = ?",
+      "UPDATE fulltest SET `ip` = ?, `hostname` = ?, `ram` = ?, `storage` = ?, `software` = ?, `drive` = ?, `hardware_status` = ?, `software_status` = ?, `drive_status` = ? WHERE id = ?",
       [
         postIPAddressInfo,
         postHostnameInfo,
         postRamInfo,
         postStorageInfo,
         postSoftwareInfo,
+        postDrivesInfo,
         postHardwareStatus,
         postSoftwareStatus,
+        postDrivesStatus,
         id,
       ],
       (err, result) => {
