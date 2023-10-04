@@ -34,7 +34,7 @@ const updateInfo = (
   id,
 ) => {
   return `UPDATE CHECK_PC SET 
-  Ip = '${postIPAddressInfo}', Hostname = '${postHostnameInfo}', Ram = '${postRamInfo}', Storage = '${postStorageInfo}', Software = '${postSoftwareInfo}', Drive = '${postDrivesInfo}', Hardware_status = '${postHardwareStatus}', Software_status = '${postSoftwareStatus}', Drive_status = '${postDrivesStatus}' 
+  Ip = '${postIPAddressInfo}', Hostname = '${postHostnameInfo}', Ram = '${postRamInfo}', Storage = '${postStorageInfo}', Software = '${postSoftwareInfo}', Drive = '${postDrivesInfo}', Hardware_status = '${postHardwareStatus}', Software_status = '${postSoftwareStatus}', Drive_status = '${postDrivesStatus}', Time_update = CURRENT_TIMESTAMP 
   WHERE Id = ${id}`
 }
 
