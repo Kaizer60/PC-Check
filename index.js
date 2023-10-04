@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const Port = 3000;
+const Port = 3002;
 const app = express();
-const con = require("./DB");
+const connectDB = require("./DB");
 const LoginRoutes = require("./Controller/LoginController");
 const InfoRoutes = require("./Controller/Info.Controller");
 
@@ -16,12 +16,13 @@ app.use("/api/Login", LoginRoutes);
 app.use("/api/Info", InfoRoutes);
 
 //Connection Check
-con.connect(() => {
-  try {
+connectDB()
+  .then(() => {
     app.listen(Port, () => {
-      console.log(`DB connection successfully at port ${Port}`);
+      console.log("Db connection successfully!");
+      console.log(`Server started at port ${Port}`);
     });
-  } catch (err) {
-    console.log("Message error: ", err);
-  }
-});
+  })
+  .catch((err) => {
+    console.log("Connection fail!: " + err);
+  });

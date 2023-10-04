@@ -50,11 +50,9 @@ const getSoftwareStatus = async () => {
     }
 
     if (softwareStatus.length == 5) {
-      console.log(true);
-      console.log(softwareStatus);
-      return true;
+      return 1;
     } else {
-      return false;
+      return 0;
     }
   } catch (err) {
     return err;

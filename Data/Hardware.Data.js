@@ -83,9 +83,9 @@ const getHardwareStatus = async () => {
     StatusArray[2] != "undefined" &&
     StatusArray[3] != "undefined"
   ) {
-    return true;
+    return 1;
   } else {
-    return false;
+    return 0;
   }
 };
 
