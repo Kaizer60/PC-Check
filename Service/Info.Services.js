@@ -2,8 +2,12 @@ const getAllInfo = () => {
   return `SELECT * FROM CHECK_PC`;
 };
 
-const getByIdInfo = (id) => {
-  return `SELECT * FROM CHECK_PC WHERE Id = ${id} `;
+const getByIpInfo = (Ip) => {
+  return `SELECT * FROM CHECK_PC WHERE Ip = '${Ip}' `;
+};
+
+const getByParameInfo = (ParameValue) => {
+  return `SELECT * FROM CHECK_PC WHERE (Ip = '${ParameValue}') OR (Hostname = '${ParameValue}') OR Hardware_status = '${ParameValue}'`;
 };
 
 const createInfo = (
@@ -31,26 +35,27 @@ const updateInfo = (
   postHardwareStatus,
   postSoftwareStatus,
   postDrivesStatus,
-  id,
+  // id
 ) => {
   return `UPDATE CHECK_PC SET 
   Ip = '${postIPAddressInfo}', Hostname = '${postHostnameInfo}', Ram = '${postRamInfo}', Storage = '${postStorageInfo}', Software = '${postSoftwareInfo}', Drive = '${postDrivesInfo}', Hardware_status = '${postHardwareStatus}', Software_status = '${postSoftwareStatus}', Drive_status = '${postDrivesStatus}', Time_update = CURRENT_TIMESTAMP 
-  WHERE Id = ${id}`
-}
+  WHERE Ip = '${postIPAddressInfo}'`;
+};
 
 const deleteAllInfo = () => {
-  return `DELETE FROM CHECK_PC`
-}
+  return `DELETE FROM CHECK_PC`;
+};
 
 const deleteByIdInfo = (id) => {
-  return `DELETE FROM CHECK_PC WHERE Id = ${id}`
-}
+  return `DELETE FROM CHECK_PC WHERE Id = ${id}`;
+};
 
 module.exports = {
   getAllInfo,
-  getByIdInfo,
+  getByIpInfo,
+  getByParameInfo,
   createInfo,
   updateInfo,
   deleteAllInfo,
-  deleteByIdInfo
+  deleteByIdInfo,
 };

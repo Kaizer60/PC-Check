@@ -8,7 +8,7 @@ const getHostnameInfo = () => {
     ? (HostNameInfo = HostName)
     : (HostNameInfo = "undefined");
   //console.log(os.hostname())
-  return "Device name : " + HostNameInfo;
+  return HostNameInfo;
   //return "Device name : Gcap";
 };
 
@@ -21,8 +21,8 @@ const getIPAddressInfo = () => {
 
     for (const iface of interfacesInfo) {
       if (iface.family === "IPv4" && !iface.internal) {
-        return "IP4v : " + iface.address;
-        //return "IP4v : 192.168.80.80";
+        return iface.address;
+        //return "192.168.50.100";
       }
     }
   }
@@ -38,7 +38,8 @@ const getRamInfo = async () => {
   //const MemoryCheck = 0
 
   if (MemoryCheck > 0) {
-    return "Ram : " + MemoryCheck + " GB";
+    return MemoryCheck;
+    //return "undefined";
   } else {
     return "undefined";
   }
@@ -62,7 +63,8 @@ const getStorageInfo = async () => {
   if (DisksList.length == 1) {
     return DisksList[0];
   } else if (DisksList.length > 1) {
-    return "Storage : " + result;
+    return result;
+    //return "undefined";
   } else {
     return "undefined";
   }

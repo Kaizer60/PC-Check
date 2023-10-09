@@ -1,5 +1,21 @@
 const express = require("express");
+const service = require("../Service/Info.Services");
+const sql = require("mssql/msnodesqlv8");
 const router = express.Router();
+
+//Get Software Data
+const { 
+  getSoftwareInfo,
+  getSoftwareStatus
+} = require("../Data/Software.Data");
+
+//Get Drives Data
+const {
+  getDrivesInfo,
+  getDrivesStatus
+} = require("../Data/Drive.Data");
+
+//Get Hardware Data
 const {
   getHostnameInfo,
   getIPAddressInfo,
@@ -7,10 +23,6 @@ const {
   getStorageInfo,
   getHardwareStatus,
 } = require("../Data/Hardware.Data");
-const { getSoftwareInfo, getSoftwareStatus } = require("../Data/Software.Data");
-const { getDrivesInfo, getDrivesStatus } = require("../Data/Drive.Data");
-const service = require("../Service/Info.Services");
-const sql = require("mssql/msnodesqlv8");
 
 //GET ALL
 router.get("/", (req, res) => {
@@ -27,14 +39,32 @@ router.get("/", (req, res) => {
 
 /*-------------------------------------------------------------------------------------------------------------------------*/
 
-//GET By Id
-router.get("/:id", (req, res) => {
-  const id = req.params.id;
+//GET By Ip
+router.get("/data/:Ip", (req, res) => {
+  const Ip = req.params.Ip;
   try {
-    sql.query(service.getByIdInfo(id), (err, result) => {
+    sql.query(service.getByIpInfo(Ip), (err, result) => {
+      //console.log(result.recordset.length)
       return err
         ? res.status(400).json({ error: err.message })
-        : res.status(200).json({ status: "ok", result: result.recordset[0] });
+        : res.status(200).json({ result: result.recordset[0] });
+    });
+  } catch (err) {
+    return res.status(404).json({ error: err.message });
+  }
+});
+
+/*-------------------------------------------------------------------------------------------------------------------------*/
+
+//GET By Parame
+router.get("/:Parame", (req, res) => {
+  const ParameValue = req.params.Parame;
+  try {
+    sql.query(service.getByParameInfo(ParameValue), (err, result) => {
+      console.log(result.recordset.length)
+      return err
+        ? res.status(400).json({ error: err.message })
+        : res.status(200).json({ result: result.recordset });
     });
   } catch (err) {
     return res.status(404).json({ error: err.message });
@@ -69,7 +99,7 @@ router.post("/", async (req, res) => {
         postDrivesStatus
       ),
       (err, result) => {
-        console.log(result.rowsAffected[0])
+        console.log(result.rowsAffected[0]);
         return err
           ? res.status(400).json({ error: err.message })
           : res
@@ -85,8 +115,8 @@ router.post("/", async (req, res) => {
 /*-------------------------------------------------------------------------------------------------------------------------*/
 
 //Update
-router.put("/:id", async (req, res) => {
-  const id = req.params.id;
+router.put("/Auto_Update/", async (req, res) => {
+  //const id = req.params.id;
   const postIPAddressInfo = await getIPAddressInfo();
   const postHostnameInfo = await getHostnameInfo();
   const postRamInfo = await getRamInfo();
@@ -109,7 +139,7 @@ router.put("/:id", async (req, res) => {
         postHardwareStatus,
         postSoftwareStatus,
         postDrivesStatus,
-        id
+        // id
       ),
       (err, result) => {
         return err
